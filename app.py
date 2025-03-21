@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, callback, Output, Intput, State, dash_table, no_update
+from dash import Dash, html, dcc, callback, Output, Input, State, dash_table, no_update
 import polars as pl
 import base64
 import io
@@ -41,7 +41,6 @@ api_to_csv_layout = [
 
 app.layout = [
     html.H1(children='Convert to CSV', style={'textAlign': 'center'}),
-    dcc.Tabs(children=[
     dcc.Tabs(children=[dcc.Tab(children=pq_to_csv_layout, label='Parquet to CSV'), dcc.Tab(children=api_to_csv_layout, label='API to CSV')]),
     dcc.Download(id='download-csv')
 ]
@@ -86,7 +85,7 @@ def convert_api(n_clicks, url, sep, quote):
         return no_update, no_update
 
 def parse_content(contents, filename, date):
-    content_type, content_string = content.split(',')
+    content_type, content_string = contents.split(',')
     decoded = base64.b64decode(content_string)
     try:
         if 'parquet' in filename:
@@ -99,7 +98,7 @@ def parse_content(contents, filename, date):
         return html.Div(['There was an error processing this file.']), no_update
     
     csv_data = df.write_csv()
-    return html.Div([
+    return html.Div(children=[
         html.H5(filename),
         dash_table.DataTable(
             df.to_dicts(),
