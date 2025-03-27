@@ -76,8 +76,7 @@ def convert_api(n_clicks, url, sep, quote):
                     df.to_dicts(),
                     [{'name': i, 'id': i} for i in df.columns]
                 )
-            ]),
-            dict(content=csv_data, filename='api-data.csv')
+            ]), dict(content=csv_data, filename='api-data.csv')
         except Exception as e:
             print(e)
             return html.Div(['There was an error processing the API.']), no_update
@@ -107,8 +106,7 @@ def parse_content(contents, filename, date):
         html.Hr(),
         html.Div('Raw Content'),
         html.Pre(contents[0:200] + '...', style={'whiteSpace': 'pre-wrap', 'wordBreak': 'break-all'})
-    ]),
-    dict(content=csv_data, filename=filename + '.csv')
+    ]), dict(content=csv_data, filename=filename + '.csv')
 
 if __name__ == '__main__':
     app.run(debug=True)
